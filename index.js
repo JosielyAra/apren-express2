@@ -13,23 +13,31 @@ server.listen(3000, () => {
 
 const express = require("express");
 const morgan = require("morgan");
+const {restart} = require("nodemon");
 const app = express();
 
-//Settings
+// Settings
 app.set('appName', 'Aprendiendo Express');
 app.set('port', 3000);
+app.set('view engine', 'ejs');
 
-//Middlewares
+// Middlewares
 app.use(express.json());
 app.use(morgan('dev'));
 
-//routes
+// routes
 /*
 app.all("/user", (req, res, next) => {
     console.log("por aqui paso");
     next();
 });
 */
+
+app.get('/', (req, res) => {
+  const data = [{name: 'jhon'},{name: 'Joel'},{name: 'Cameron'}, {name: 'Luis'}];
+    res.render('index.ejs', {people: data});
+});
+
 app.get("/user", (req, res) => {
     res.json({username: "Cameron", latname: "Boice"});
 });
@@ -55,6 +63,6 @@ app.delete("/user/:id", (req, res) => {
 app.use(express.static('public'));
 
 app.listen(app.get('port'), () => {
-  console.log(app.get('appName'));
+    console.log(app.get('appName'));
     console.log("Server on port", app.get('port'));
 });
