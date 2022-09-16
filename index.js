@@ -12,21 +12,23 @@ server.listen(3000, () => {
 */
 
 const express = require("express");
+
 const app = express();
 
 function logger(req, res, next) {
-    console.log("Request received");
+    console.log(`Route Received: ${req.protocol}://${req.get('host')}${req.originalUrl}`);
     next();
 }
 
 app.use(express.json());
-app.use(logger);
 
+app.use(logger);
+/*
 app.all("/user", (req, res, next) => {
     console.log("por aqui paso");
     next();
 });
-
+*/
 app.get("/user", (req, res) => {
     res.json({username: "Cameron", latname: "Boice"});
 });
