@@ -12,17 +12,18 @@ server.listen(3000, () => {
 */
 
 const express = require("express");
-
+const morgan = require("morgan");
 const app = express();
 
-function logger(req, res, next) {
-    console.log(`Route Received: ${req.protocol}://${req.get('host')}${req.originalUrl}`);
-    next();
-}
+//Settings
+app.set('appName', 'Aprendiendo Express');
+app.set('port', 3000);
 
+//Middlewares
 app.use(express.json());
+app.use(morgan('dev'));
 
-app.use(logger);
+//routes
 /*
 app.all("/user", (req, res, next) => {
     console.log("por aqui paso");
@@ -51,6 +52,9 @@ app.delete("/user/:id", (req, res) => {
     } deleted`);
 });
 
-app.listen(5000, () => {
-    console.log("Server on port 5000");
+app.use(express.static('public'));
+
+app.listen(app.get('port'), () => {
+  console.log(app.get('appName'));
+    console.log("Server on port", app.get('port'));
 });
